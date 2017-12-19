@@ -12,7 +12,13 @@
   returns the file descriptor for the upstream pipe.
   =========================*/
 int server_setup() {
-  return -1;
+  
+  mkfifo("luigi", 600);
+  int wkp = open("luigi", ORD_ONLY, 0644);
+
+  remove("luigi");
+  
+  return wkp;
 }
 
 
@@ -25,7 +31,12 @@ int server_setup() {
   returns the file descriptor for the downstream pipe.
   =========================*/
 int server_connect(int from_client) {
-  return -1;
+  int wkp = server_setup();
+  char msg[128];
+  read(wkp, msg, sizeof(msg));
+  
+  write(from_client, ACK, sizeof(ACK));
+  return from_client;
 }
 
 /*=========================

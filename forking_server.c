@@ -12,9 +12,22 @@ static void sighandler(int signo) {
 }
 
 int main() {
+  signal(SIGINT, sighandler);
+  int parent = fork();
+  if(parent){
+    
+    server_setup();
+    
+  } else{
+    
+    subserver(server_connect());
+    
+  }
+    
 }
 
 void subserver(int from_client) {
+  process();
 }
 
 void process(char * s) {
