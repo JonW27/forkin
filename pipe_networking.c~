@@ -12,9 +12,8 @@
   returns the file descriptor for the upstream pipe.
   =========================*/
 int server_setup() {
-  printf("[server] handshake: making wkp\n");
-
-  mkfifo("luigi", 0600);
+  
+  mkfifo("luigi", 600);
   int wkp = open("luigi", O_RDONLY, 0644);
 
   remove("luigi");

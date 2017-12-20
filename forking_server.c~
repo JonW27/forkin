@@ -13,12 +13,11 @@ static void sighandler(int signo) {
 
 int main() {
   signal(SIGINT, sighandler);
-  while(1){
-    int wkp = server_setup();
-    int parent = fork();
-    if(!parent){
-      subserver(wkp);
-    }
+    
+  int wkp = server_setup();
+  int parent = fork();
+  while(!parent){
+    subserver(wkp);
   }
     
 }
