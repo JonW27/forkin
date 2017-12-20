@@ -1,5 +1,6 @@
 #include "pipe_networking.h"
 #include <signal.h>
+#include <ctype.h>
 
 void process(char *s);
 void subserver(int from_client);
@@ -25,16 +26,17 @@ int main() {
 
 void subserver(int from_client) {
   int client = server_connect(from_client);
-  char msg[128];
-  read(from_client, msg, sizeof(msg));
-  process(msg);
-  write(client, msg, sizeof(msg));
+  char msg[BUFFER_SIZE];
+  while(read(from_client, msg, sizeof(msg))){
+    process(msg);
+    write(client, msg, sizeof(msg));
+  }
+  exit(0);
 }
 
 void process(char * s) {
   int i = 0;
-  while(s){
-    s[i] = 'a';
-    i++;
+  for (; s[i]; i++) {
+    s[i] = toupper(s[i]);
   }
 }

@@ -32,12 +32,15 @@ int server_setup() {
   returns the file descriptor for the downstream pipe.
   =========================*/
 int server_connect(int from_client) {  // from_client = wkp
-  char msg[128];
+  char msg[HANDSHAKE_BUFFER_SIZE];
   read(from_client, msg, sizeof(msg));
   
   int client = open(msg, O_WRONLY);
   remove(msg);
   write(client, ACK, sizeof(ACK));
+
+  read(from_client, msg, sizeof(msg));
+
   return client;
 }
 
